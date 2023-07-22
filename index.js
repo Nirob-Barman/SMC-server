@@ -135,7 +135,7 @@ async function run() {
         // class collection
 
         // GET endpoint for retrieving classes
-        app.get('/class', async (req, res) => {
+        app.get('/classes', async (req, res) => {
             try {
                 const classes = await classCollection.find().toArray();
                 res.send(classes);
@@ -147,7 +147,7 @@ async function run() {
         })
 
         // GET endpoint for retrieving user classes by email
-        app.get('/classes', async (req, res) => {
+        app.get('/classes/instructor', async (req, res) => {
             try {
                 // console.log(req.body);
                 // console.log(req.query);

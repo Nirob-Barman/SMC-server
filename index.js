@@ -135,7 +135,7 @@ async function run() {
         // class collection
 
         // GET endpoint for retrieving classes
-        app.get('/classes', async (req, res) => {
+        app.get('/class', async (req, res) => {
             try {
                 const classes = await classCollection.find().toArray();
                 res.send(classes);
@@ -146,18 +146,19 @@ async function run() {
             }
         })
 
-
         // GET endpoint for retrieving user classes by email
         app.get('/classes', async (req, res) => {
             try {
                 // console.log(req.body);
                 // console.log(req.query);
-                // const { email } = req.query;
-                const email = req.query.email;
+                const { email } = req.query;
+                // const email = req.query.email;
 
                 console.log("Server Email: ", email);
-                const userClasses = await classCollection.find({ email }).toArray();
-                res.send(userClasses);
+                // const userClasses = await classCollection.find({ email }).toArray();
+                // res.send(userClasses);
+                const classes = await classCollection.find({ email: email }).toArray();
+                res.json(classes);
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ error: 'Internal server error' });

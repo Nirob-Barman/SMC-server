@@ -32,6 +32,7 @@ async function run() {
 
         const usersCollection = client.db("smcDb").collection("users");
         const classCollection = client.db("smcDb").collection("classes");
+        const selectedClassCollection = client.db("smcDb").collection("selectedClasses");
 
 
 
@@ -258,6 +259,79 @@ async function run() {
                 res.status(500).json({ error: 'Internal server error' });
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Enrolled classes
+
+        // Create a new class
+        app.post('/selectClasses', async (req, res) => {
+            try {
+                const classData = req.body; // Class data received from the client
+                // Omit the _id field to let MongoDB generate a unique identifier
+                delete classData._id;
+
+                const result = await selectedClassCollection.insertOne(classData);
+
+                res.send(classData);
+
+            } catch (error) {
+                console.error('Error creating class:', error);
+                res.status(500).json({ error: 'Server error' });
+            }
+        });
+
+
+
+
+        // Get all classes
+        // app.get('/selectClasses', async (req, res) => {
+        //     try {
+        //         const classes = await selectedClassCollection.find().toArray();
+        //         res.status(200).json(classes);
+        //     } catch (error) {
+        //         console.error('Error getting classes:', error);
+        //         res.status(500).json({ error: 'Server error' });
+        //     }
+        // });
+
+        app.get('/selectClasses', async (req, res) => {
+            try {
+                const userEmail = req.query.email; // Get the user's email from the query parameter
+
+                // Fetch the classes selected by the user based on their email
+                const selectedClasses = await selectedClassCollection.find({ email: userEmail }).toArray();
+
+                res.status(200).json(selectedClasses);
+            } catch (error) {
+                console.error('Error fetching selected classes:', error);
+                res.status(500).json({ error: 'Server error' });
+            }
+        });
+
+
+
+
+
+
+
+
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });

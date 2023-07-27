@@ -310,9 +310,10 @@ async function run() {
         //     }
         // });
 
-        app.get('/selectClasses', async (req, res) => {
+        app.get('/selectClasses/:email', async (req, res) => {
             try {
                 const userEmail = req.query.email; // Get the user's email from the query parameter
+
 
                 // Fetch the classes selected by the user based on their email
                 const selectedClasses = await selectedClassCollection.find({ email: userEmail }).toArray();
